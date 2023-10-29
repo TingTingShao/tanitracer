@@ -30,7 +30,7 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-
+import czifile
 import os, sys, argparse, numpy, tifffile
 from taniclass import gaussian8
 
@@ -68,14 +68,24 @@ else:
     output_filename = args.output_file[0]
 
 # read image
-orig_images = tifffile.imread(input_filename)
+img=czifile.imread(input_filename)
+image_data=img.squeeze()
+channel0=image_data[0]
+new_shape = (107, 512, 512)
+orig_images = channel0.reshape(new_shape)
+# orig_images = tifffile.imread(input_filename)
+
+# if laplace is not None:
+# 	tracer.laplace=laplace
 if len(orig_images.shape) == 2:
-    orig_images = numpy.array([orig_images])
+   orig_images = numpy.array([orig_images])
 
 # apply log filter
 float_images = numpy.array(orig_images, 'f')
 tracer.set_image_clip(orig_images)
 float_images = tracer.clip_array(float_images)
+# print(len(float_images))
+# print(float_images.shape)
 for index in range(len(float_images)):
     float_images[index] = tracer.standardize_and_filter_image(float_images[index])
 

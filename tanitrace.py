@@ -33,6 +33,7 @@
 
 import os, sys, argparse, pandas, numpy, matplotlib, tifffile
 from taniclass import gaussian8, nnchaser, spotmarker, spotplotter, spotfilter
+import czifile
 
 # prepare library instances
 tracer = gaussian8.Gaussian8()
@@ -163,7 +164,13 @@ else:
     output_image_filename = args.output_image_file[0]
 
 # read image
-orig_image = tifffile.imread(input_filename)
+# orig_image = tifffile.imread(input_filename)
+img=czifile.imread(input_filename)
+image_data=img.squeeze()
+channel0=image_data[0]
+new_shape = (107, 512, 512)
+orig_image = channel0.reshape(new_shape)
+
 if len(orig_image.shape) == 2:
     orig_image = numpy.array([orig_image])
 print("Read image %s" % (input_filename))

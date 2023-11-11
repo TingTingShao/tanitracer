@@ -35,6 +35,7 @@ import os, sys, numpy, pandas, time
 import scipy.ndimage as ndimage
 from skimage.feature import peak_local_max
 from sklearn.neighbors import NearestNeighbors
+from openpiv import preprocess
 
 class Gaussian8:
     def __init__ (self):
@@ -190,7 +191,8 @@ class Gaussian8:
         return float_array.clip(self.image_clip_min, self.image_clip_max)
 
     def standardize_and_filter_image (self, float_image):
-        float_image = - (float_image - numpy.max(float_image)) / numpy.ptp(float_image)
+        # float_image = - (float_image - numpy.max(float_image)) / numpy.ptp(float_image)
+        float_image=preprocess.normalize_array(float_image, axis=None)
         return ndimage.gaussian_laplace(float_image, self.laplace)
 
     def convert_to_pandas (self, result):
@@ -224,7 +226,7 @@ class Gaussian8:
 
         # get float image anf filter
         float_stack = numpy.array(input_stack, 'f')
-        float_stack = self.clip_array(float_stack)
+        # float_stack = self.clip_array(float_stack)
 
         # arrays to store results
         result_array = []

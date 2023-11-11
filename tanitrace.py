@@ -177,11 +177,12 @@ if len(orig_image.shape) == 2:
 print("Read image %s" % (input_filename))
 
 # image clip
-tracer.set_image_clip(orig_image[0])
+# tracer.set_image_clip(orig_image[0])
 
 # fitting and combine all results
 results = tracer.fitting_image_stack(orig_image)
 if len(results) == 0:
+
     print("No spots detected. Quit.")
     sys.exit()
 

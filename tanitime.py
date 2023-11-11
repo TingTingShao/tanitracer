@@ -129,7 +129,8 @@ if selected_mode == 'regression':
             break
         output_indexes += [index - start_regression]
         output_counts += [spot_count]
-
+        # print(output_indexes)
+        print(output_counts)
     # prepare data
     output_columns = ['lifecount', 'lifetime', 'regression', 'ratio']
     output_times = [i * time_scale for i in output_indexes]

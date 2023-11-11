@@ -73,6 +73,7 @@ image_data=img.squeeze()
 channel0=image_data[0]
 new_shape = (107, 512, 512)
 orig_images = channel0.reshape(new_shape)
+orig_images = orig_images[:9]
 # orig_images = tifffile.imread(input_filename)
 
 # if laplace is not None:

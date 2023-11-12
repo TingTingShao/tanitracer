@@ -139,7 +139,7 @@ image_data=img.squeeze()
 channel0=image_data[0]
 new_shape = (107, 512, 512)
 orig_image = channel0.reshape(new_shape)
-orig_image = orig_image[:9]
+orig_image = orig_image[3:9]
 if len(orig_image.shape) > 2:
     orig_image = orig_image[use_plane]
 

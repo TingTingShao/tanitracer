@@ -152,8 +152,8 @@ marker.marker_size = args.marker_size[0]
 marker.marker_rainbow = args.marker_rainbow
 marker.invert_image = args.invert_image
 
-if args.mask_image is not None:
-    filter.mask_image_filename = args.mask_image[0]
+# if args.mask_image is not None:
+#     filter.mask_image_filename = args.mask_image[0]
 
 output_image = args.output_image
 if args.output_image_file is None:
@@ -170,14 +170,14 @@ image_data=img.squeeze()
 channel0=image_data[0]
 new_shape = (107, 512, 512)
 orig_image = channel0.reshape(new_shape)
-orig_image = orig_image[:9]
+orig_image = orig_image[3:9]
 
 if len(orig_image.shape) == 2:
     orig_image = numpy.array([orig_image])
 print("Read image %s" % (input_filename))
 
 # image clip
-# tracer.set_image_clip(orig_image[0])
+tracer.set_image_clip(orig_image[0])
 
 # fitting and combine all results
 results = tracer.fitting_image_stack(orig_image)
@@ -201,8 +201,10 @@ if filter.mask_image_filename is not None:
     results = filter.filter_spots_maskimage(results)
     print("Filtered %d spots using a mask image: %s." % (total_spots - len(results), filter.mask_image_filename))
 
+# fp="/Volumes/USB/IBP_data/results/tanitracer/"
+fp="./"
 # open tsv file and output header
-output_tsv_file = open(output_tsv_filename, 'w', newline='')
+output_tsv_file = open(fp+output_tsv_filename, 'w', newline='')
 tracer.output_header(output_tsv_file, input_filename, orig_image)
 if chase_spots is True:
     chaser.output_header(output_tsv_file)
@@ -225,7 +227,7 @@ if output_image is True:
     image_color = marker.mark_spots(image_color, results)
 
     # output multipage tiff
-    tifffile.imwrite(output_image_filename, image_color)
+    tifffile.imwrite(fp+output_image_filename, image_color)
     print("Output image file to %s." % (output_image_filename))
 
 # spacer to next processing
